@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class HomeGUI extends JFrame
 {
@@ -15,21 +16,7 @@ public class HomeGUI extends JFrame
 		contentPane.setLayout(homeLayout);
 
 		JButton wordCardPadButton = new JButton("単語帳");
-		//wordCardPadButton.setPreferredSize(new Dimension(180,160));
-		JButton learningHistoryButton = new JButton("学習記録");
-		JButton todayLearningButton = new JButton("今日の学習");
-		JButton todayScheduleButton = new JButton("スケジュール");
-		JButton exsamButton = new JButton("試験");
-		JButton exitButton = new JButton("終了");
-
-		contentPane.add(wordCardPadButton);
-		contentPane.add(learningHistoryButton);
-		contentPane.add(todayLearningButton);
-		contentPane.add(todayScheduleButton);
-		contentPane.add(exsamButton);
-		contentPane.add(exitButton);
-
-		contentPane.addActionListener
+		wordCardPadButton.addActionListener
 		(
 			new ActionListener()
 			{
@@ -38,10 +25,70 @@ public class HomeGUI extends JFrame
 				}
 			}
 		);
+
+		JButton learningHistoryButton = new JButton("学習記録");
+		learningHistoryButton.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+				}
+			}
+		);
+		JButton todayLearningButton = new JButton("今日の学習");
+		todayLearningButton.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+				}
+			}
+		);
+		JButton todayScheduleButton = new JButton("スケジュール");
+		todayScheduleButton.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+				}
+			}
+		);
+		JButton examButton = new JButton("試験");
+		examButton.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+				}
+			}
+		);
+		JButton exitButton = new JButton("終了");
+		exitButton.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					System.exit(0);
+				}
+			}
+		);
+
+		contentPane.add(wordCardPadButton);
 		contentPane.add(learningHistoryButton);
 		contentPane.add(todayLearningButton);
 		contentPane.add(todayScheduleButton);
-		contentPane.add(exsamButton);
+		contentPane.add(examButton);
+		contentPane.add(exitButton);
+
+		contentPane.add(learningHistoryButton);
+		contentPane.add(todayLearningButton);
+		contentPane.add(todayScheduleButton);
+		contentPane.add(examButton);
 		contentPane.add(exitButton);
 
     }
