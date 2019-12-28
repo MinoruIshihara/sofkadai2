@@ -45,6 +45,19 @@ public class PadListGUI extends JFrame
             contentPane.add(padButtons[GridNum]);
         }
             padButtons[padArray.size()] = new JButton("＋新規作成");
+
+            padButtons[padArray.size()].addActionListener
+            (
+                new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        System.out.println("A");
+                        NewPadGUI newPadGUI = new NewPadGUI();
+                    }
+                }
+            );
+
             contentPane.add(padButtons[padArray.size()]);
     }
 }
