@@ -6,10 +6,11 @@ import java.util.*;
 import java.io.IOException;
 import java.lang.InterruptedException;
 
-public class PadListGUI
+public class PadListGUI extends JFrame 
 {
     public PadListGUI()
     {
+        super("単語帳");
         ArrayList<String> padArray = new ArrayList<String>(); 
         ProcessBuilder getPadListPB = new ProcessBuilder("python3","../quizsystem/GetPadList.py");
         try
@@ -27,8 +28,24 @@ public class PadListGUI
             catch(InterruptedException e){System.out.println("Cannot Start Quiz System");}
         }
         catch(IOException e){System.out.println("Cannot Open file");}
-        System.out.println(padArray.get(0));
-        System.out.println(padArray.get(1));
+
+        setBounds(100,100,540,960);
+        setVisible(true);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+
+        Container contentPane = getContentPane();
+        GridLayout padListLayout = new GridLayout(padArray.size()+1,1);
+        contentPane.setLayout(padListLayout);
+
+        JButton padButtons[] = new JButton[padArray.size()+1];
+
+        for(int GridNum = 0; GridNum < padArray.size(); GridNum++)
+        {
+            padButtons[GridNum] = new JButton(padArray.get(GridNum));
+            contentPane.add(padButtons[GridNum]);
+        }
+            padButtons[padArray.size()] = new JButton("＋新規作成");
+            contentPane.add(padButtons[padArray.size()]);
     }
 }
 
