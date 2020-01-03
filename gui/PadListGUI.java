@@ -11,8 +11,8 @@ public class PadListGUI extends JFrame
     public PadListGUI()
     {
         super("単語帳");
-        ArrayList<String> padArray = new ArrayList<String>(); 
-        ProcessBuilder getPadListPB = new ProcessBuilder("python3","../quizsystem/GetPadList.py");
+        ArrayList<String> padArray = new ArrayList<String>();
+        ProcessBuilder getPadListPB = new ProcessBuilder("python3","../quizsystem/getPadList.py");
         try
         {
             Process getPadListProcess = getPadListPB.start();
@@ -52,8 +52,8 @@ public class PadListGUI extends JFrame
                 {
                     public void actionPerformed(ActionEvent e)
                     {
-                        System.out.println("A");
                         NewPadGUI newPadGUI = new NewPadGUI();
+                        dispose();
                     }
                 }
             );

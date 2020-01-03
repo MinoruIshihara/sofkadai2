@@ -8,11 +8,12 @@ import java.lang.InterruptedException;
 
 public class NewPadGUI extends JFrame implements ActionListener
 {
+    private JTextField titleText;
     public NewPadGUI()
     {
         super("新規単語帳");
 
-        setBounds(100,100,540,304);
+        setBounds(100,100,290,76);
         setVisible(true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
@@ -20,10 +21,20 @@ public class NewPadGUI extends JFrame implements ActionListener
         GridLayout newPadLayout = new GridLayout(0,1);
         contentPane.setLayout(newPadLayout);
 
-        JTextField titleText = new JTextField("タイトルを入力",20);
+        titleText = new JTextField("タイトルを入力",20);
+        titleText.setPreferredSize(new Dimension(200,15));
         contentPane.add(titleText);
+
+        JButton createButton = new JButton("作成");
+        createButton.addActionListener(this);
+        contentPane.add(createButton);
     }
     public void actionPerformed(ActionEvent e)
     {
+        String[] makeListProcArg = {"python3","../quizsystem/makeCard.py",titleText.getText()};
+        SubProcessColler makeListProc = new SubProcessColler(makeListProcArg);
+        makeListProc.runProcess();
+        PadListGUI padListGUI = new PadListGUI();
+        dispose();
     }
 }
