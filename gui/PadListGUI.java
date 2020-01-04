@@ -6,7 +6,7 @@ import java.util.*;
 import java.io.IOException;
 import java.lang.InterruptedException;
 
-public class PadListGUI extends JFrame 
+public class PadListGUI extends JFrame implements ActionListener
 {
     public PadListGUI()
     {
@@ -42,23 +42,29 @@ public class PadListGUI extends JFrame
         for(int GridNum = 0; GridNum < padArray.size(); GridNum++)
         {
             padButtons[GridNum] = new JButton(padArray.get(GridNum));
+            padButtons[GridNum].setActionCommand(padArray.get(GridNum));
+            padButtons[GridNum].addActionListener(this);
             contentPane.add(padButtons[GridNum]);
         }
-            padButtons[padArray.size()] = new JButton("＋新規作成");
+        padButtons[padArray.size()] = new JButton("＋新規作成");
 
-            padButtons[padArray.size()].addActionListener
-            (
-                new ActionListener()
+        padButtons[padArray.size()].addActionListener
+        (
+            new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
                 {
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        NewPadGUI newPadGUI = new NewPadGUI();
-                        dispose();
-                    }
+                    NewPadGUI newPadGUI = new NewPadGUI();
+                    dispose();
                 }
-            );
+            }
+        );
 
-            contentPane.add(padButtons[padArray.size()]);
+        contentPane.add(padButtons[padArray.size()]);
+    }
+    public void actionPerformed(ActionEvent e)
+    {
+        CardListGUI cardListGUI = new CardListGUI(e.getActionCommand());
     }
 }
 
