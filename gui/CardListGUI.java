@@ -11,6 +11,9 @@ public class CardListGUI extends JFrame implements ActionListener
 {
     Container contentPane;
     CardLayout rootCardLayout;
+    ArrayList<CardLayout> cardPanelLayoutArray;
+    ArrayList<JPanel> cardTextPanelList;
+
     public CardListGUI(String title)
     {
         super(title);
@@ -20,28 +23,46 @@ public class CardListGUI extends JFrame implements ActionListener
         ArrayList<String> padInfoArray = getPadInfoProcess.runProcess();
         int maxCardNum = Integer.parseInt(padInfoArray.get(0));
 
+        cardPanelLayoutArray = new ArrayList<CardLayout>(0);
         ArrayList<JPanel> cardArray = new ArrayList<JPanel>(0);
+        cardTextPanelList = new ArrayList<JPanel>(0);
+
         for(int cardNum=0;cardNum<maxCardNum;cardNum++)
         {
             String[] getCardProcessArg = {"python3","../quizsystem/getCard.py",title,String.valueOf(cardNum)};
-            SubProcessColler getCardListProcess = new SubProcessColler(getCardProcessArg);
+            SubProcessColler getCardProcess = new SubProcessColler(getCardProcessArg);
+
+            String[] getAnswerProcessArg = {"python3","../quizsystem/getAnswer.py",title,String.valueOf(cardNum)};
+            SubProcessColler getAnswerProcess = new SubProcessColler(getAnswerProcessArg);
 
             JPanel cardPanel = new JPanel();
             cardPanel.setLayout(new BorderLayout());
 
             JPanel cardTextPanel = new JPanel();
-            cardTextPanel.setLayout(new CardLayout());
-            JLabel quizTextLabel = new JLabel(getCardListProcess.runProcess().get(0));
+            CardLayout cardPanelLayout = new CardLayout();
+            cardPanelLayoutArray.add(cardPanelLayout);
+            cardTextPanel.setLayout(cardPanelLayoutArray.get(cardNum));
+
+            JLabel quizTextLabel = new JLabel(getCardProcess.runProcess().get(0));
             quizTextLabel.setPreferredSize(new Dimension(360,160));
             quizTextLabel.setBorder(new LineBorder(Color.blue,10,true));
             quizTextLabel.setFont(new Font("MS ゴシック",Font.BOLD,16));
             quizTextLabel.setHorizontalAlignment(JLabel.CENTER);
+            JLabel answerTextLabel = new JLabel(getAnswerProcess.runProcess().get(0));
+            answerTextLabel.setPreferredSize(new Dimension(360,160));
+            answerTextLabel.setBorder(new LineBorder(Color.blue,10,true));
+            answerTextLabel.setFont(new Font("MS ゴシック",Font.BOLD,16));
+            answerTextLabel.setHorizontalAlignment(JLabel.CENTER);
             cardTextPanel.add(quizTextLabel);
+            cardTextPanel.add(answerTextLabel);
+
+            cardTextPanelList.add(cardTextPanel);
 
             JButton returnButton = new JButton("裏返す");
             returnButton.setActionCommand("return:"+String.valueOf(cardNum));
+            returnButton.addActionListener(this);
 
-            cardPanel.add(cardTextPanel,BorderLayout.CENTER);
+            cardPanel.add(cardTextPanelList.get(cardNum),BorderLayout.CENTER);
             cardPanel.add(returnButton,BorderLayout.LINE_END);
 
             cardArray.add(cardPanel);
@@ -94,6 +115,12 @@ public class CardListGUI extends JFrame implements ActionListener
         {
             rootCardLayout.previous(contentPane);
             System.out.println("Back");
+        }
+        else
+        {
+            int cardNum = Integer.parseInt(e.getActionCommand().split(":",0)[1]);
+            System.out.println(cardNum);
+            cardPanelLayoutArray.get(cardNum).next(cardTextPanelList.get(cardNum));
         }
     }
 }
