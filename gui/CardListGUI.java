@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.Process;
@@ -19,12 +20,31 @@ public class CardListGUI extends JFrame implements ActionListener
         ArrayList<String> padInfoArray = getPadInfoProcess.runProcess();
         int maxCardNum = Integer.parseInt(padInfoArray.get(0));
 
-        ArrayList<String> cardArray = new ArrayList<String>(0);
+        ArrayList<JPanel> cardArray = new ArrayList<JPanel>(0);
         for(int cardNum=0;cardNum<maxCardNum;cardNum++)
         {
             String[] getCardProcessArg = {"python3","../quizsystem/getCard.py",title,String.valueOf(cardNum)};
             SubProcessColler getCardListProcess = new SubProcessColler(getCardProcessArg);
-            cardArray.add(getCardListProcess.runProcess().get(0));
+
+            JPanel cardPanel = new JPanel();
+            cardPanel.setLayout(new BorderLayout());
+
+            JPanel cardTextPanel = new JPanel();
+            cardTextPanel.setLayout(new CardLayout());
+            JLabel quizTextLabel = new JLabel(getCardListProcess.runProcess().get(0));
+            quizTextLabel.setPreferredSize(new Dimension(360,160));
+            quizTextLabel.setBorder(new LineBorder(Color.blue,10,true));
+            quizTextLabel.setFont(new Font("MS ゴシック",Font.BOLD,16));
+            quizTextLabel.setHorizontalAlignment(JLabel.CENTER);
+            cardTextPanel.add(quizTextLabel);
+
+            JButton returnButton = new JButton("裏返す");
+            returnButton.setActionCommand("return:"+String.valueOf(cardNum));
+
+            cardPanel.add(cardTextPanel,BorderLayout.CENTER);
+            cardPanel.add(returnButton,BorderLayout.LINE_END);
+
+            cardArray.add(cardPanel);
         }
 
         setBounds(100,100,540,960);
@@ -35,13 +55,6 @@ public class CardListGUI extends JFrame implements ActionListener
         rootCardLayout = new CardLayout();
         contentPane.setLayout(rootCardLayout);
 
-        JButton cardButtons[] = new JButton[cardArray.size()+1];
-        for(int GridNum = 0; GridNum < cardArray.size(); GridNum++)
-        {
-            cardButtons[GridNum] = new JButton(cardArray.get(GridNum));
-        }
-        cardButtons[cardArray.size()] = new JButton("＋新規作成");
-
         ArrayList<JPanel> cardListPanels = new ArrayList<JPanel>(0);
         GridLayout cardListLayout = new GridLayout(6,1);
         for(int panelNum=0;panelNum<(maxCardNum+1)/5;panelNum++)
@@ -50,8 +63,8 @@ public class CardListGUI extends JFrame implements ActionListener
             cardListPanels.get(panelNum).setLayout(cardListLayout);
             for(int cardNum=0;cardNum<5;cardNum++)
             {
-                cardListPanels.get(panelNum).add(cardButtons[panelNum*5+cardNum]);
-                System.out.println(cardButtons[panelNum*5+cardNum].getAccessibleContext());
+                cardListPanels.get(panelNum).add(cardArray.get(panelNum*5+cardNum));
+                System.out.println(cardArray.get(panelNum*5+cardNum).getAccessibleContext());
             }
 
             JPanel nextBackPanel = new JPanel();
@@ -69,21 +82,6 @@ public class CardListGUI extends JFrame implements ActionListener
             contentPane.add(cardListPanels.get(panelNum));
         }
 
-            /*
-            cardButtons[cardArray.size()].addActionListener
-            (
-                new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        NewCardGUI newCardGUI = new NewCardGUI();
-                        dispose();
-                    }
-                }
-            );
-            */
-
-            //contentPane.add(cardButtons[cardArray.size()]);
     }
     public void actionPerformed(ActionEvent e)
     {
