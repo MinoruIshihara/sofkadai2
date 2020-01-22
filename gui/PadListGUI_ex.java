@@ -30,6 +30,7 @@ public class PadListGUI_ex extends JFrame implements ActionListener
         String[] getPadProcessArg = {"python3","../quizsystem/getPadList.py"};
         SubProcessColler getPadProcess = new SubProcessColler(getPadProcessArg);
         ArrayList<String> padNameList = getPadProcess.runProcess();
+        padNameList.add("+新規作成");
 
         for(int padNum=0;padNum<padNameList.size();padNum++)
         {
@@ -45,6 +46,7 @@ public class PadListGUI_ex extends JFrame implements ActionListener
             JButton editButton = new JButton("edit");
             editButton.addActionListener(this);
             editButton.setActionCommand("edit:"+padNameList.get(padNum));
+            editButton.setPreferredSize(new Dimension(120,160));
 
             padPanel.add(padButton);
             padPanel.add(editButton);
@@ -61,12 +63,13 @@ public class PadListGUI_ex extends JFrame implements ActionListener
 
         ArrayList<JPanel> padListPanels = new ArrayList<JPanel>(0);
 
-        for(int panelNum=0;panelNum<(padNameList.size()+1)/5;panelNum++)
+        System.out.println(padNameList.size()+1);
+        for(int panelNum=0;panelNum<(padNameList.size()-1)/5+1;panelNum++)
         {
             padListPanels.add(new JPanel());
             padListPanels.get(panelNum).setLayout(new GridLayout(6,1));
 
-            for(int padNum=0;padNum<5;padNum++)
+            for(int padNum=0;padNum<5&&padPanelList.size()>panelNum*5+padNum;padNum++)
             {
                 padListPanels.get(panelNum).add(padPanelList.get(panelNum*5+padNum));
                 System.out.println(padPanelList.get(panelNum*5+padNum).getAccessibleContext());
@@ -102,11 +105,19 @@ public class PadListGUI_ex extends JFrame implements ActionListener
             rootPadLayout.previous(contentPane);
             System.out.println("Back");
         }
-        else
+        else if(e.getActionCommand().matches("edit:.*"))
         {
             String padName = e.getActionCommand().split(":",0)[1];
             System.out.println(padName);
-            //padPanelLayoutArray.get(padNum).next(padTextPanelList.get(padNum));
+        }
+        else if(e.getActionCommand().equals("+新規作成"))
+        {
+            NewPadGUI newPadGUI = new NewPadGUI();
+            dispose();
+        }
+        else 
+        {
+            CardListGUI cardListGUI = new CardListGUI(e.getActionCommand());
         }
     }
 }

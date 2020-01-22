@@ -22,7 +22,7 @@ public class HomeGUI extends JFrame
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    PadListGUI padListGUI = new PadListGUI();
+                    PadListGUI_ex padListGUI = new PadListGUI_ex();
                 }
             }
         );

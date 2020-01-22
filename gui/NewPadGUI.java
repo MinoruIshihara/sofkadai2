@@ -34,7 +34,7 @@ public class NewPadGUI extends JFrame implements ActionListener
         String[] makeListProcArg = {"python3","../quizsystem/makeCard.py",titleText.getText()};
         SubProcessColler makeListProc = new SubProcessColler(makeListProcArg);
         makeListProc.runProcess();
-        PadListGUI padListGUI = new PadListGUI();
+        PadListGUI_ex padListGUI = new PadListGUI_ex();
         dispose();
     }
 }
