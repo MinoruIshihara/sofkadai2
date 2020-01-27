@@ -12,7 +12,7 @@ public class PadListGUI_ex extends JFrame implements ActionListener
     Container contentPane;
     CardLayout rootPadLayout;
     ArrayList<JPanel> padPanelList;
-    ArrayList<GridLayout> padPanelLayoutList;
+    ArrayList<BorderLayout> padPanelLayoutList;
     ArrayList<JButton> padButtonList;
     ArrayList<JButton> editButtonList;
 
@@ -23,7 +23,7 @@ public class PadListGUI_ex extends JFrame implements ActionListener
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
         padPanelList = new ArrayList<JPanel>(0);
-        padPanelLayoutList = new ArrayList<GridLayout>(0);
+        padPanelLayoutList = new ArrayList<BorderLayout>(0);
         padButtonList = new ArrayList<JButton>(0);
         editButtonList = new ArrayList<JButton>(0);
 
@@ -35,7 +35,7 @@ public class PadListGUI_ex extends JFrame implements ActionListener
         for(int padNum=0;padNum<padNameList.size();padNum++)
         {
             JPanel padPanel = new JPanel();
-            GridLayout padPanelLayout = new GridLayout(1,2);
+            BorderLayout padPanelLayout = new BorderLayout();
             padPanel.setLayout(padPanelLayout);
 
             JButton padButton = new JButton(padNameList.get(padNum));
@@ -48,8 +48,8 @@ public class PadListGUI_ex extends JFrame implements ActionListener
             editButton.setActionCommand("edit:"+padNameList.get(padNum));
             editButton.setPreferredSize(new Dimension(120,160));
 
-            padPanel.add(padButton);
-            padPanel.add(editButton);
+            padPanel.add(padButton,BorderLayout.CENTER);
+            padPanel.add(editButton,BorderLayout.LINE_END);
 
             padPanelList.add(padPanel);
             padPanelLayoutList.add(padPanelLayout);
