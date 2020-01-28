@@ -5,7 +5,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import io
-import drive_http
+from googleapiclient.http import MediaIoBaseDownload
 
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -67,7 +67,7 @@ def main():
 	for dfile in saveFiles:
 		request = drive_service.files().get_media(fileId=dfile.get('id'))
 		fh = open('downloaded','wb')
-		downloader = drive_http.MediaIoBaseDownload(fh,request)
+		downloader = MediaIoBaseDownload(fh,request)
 		done = False
 		while done is False:
 			status, done = downloader.next_chunk()
