@@ -4,10 +4,10 @@ block_cipher = None
 
 
 a = Analysis(['download.py'],
-             pathex=['/home/pi/git/sofkadai2/network'],
+             pathex=['/home/remonjuice2/git/sofkadai2/network'],
              binaries=[],
              datas=[],
-             hiddenimports=[],
+             hiddenimports=['pkg_resources.py2_warn','pkg_resources.abstractmethod'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
