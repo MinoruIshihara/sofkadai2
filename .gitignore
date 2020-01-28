@@ -1,4 +1,3 @@
 saves/
 network/token.pickle
-network/credentials.json
-
+network/__pycache__/
