@@ -5,10 +5,12 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from apiclient.http import MediaFileUpload
+from pathlib import Path
+import mimetypes
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
-def main():
+def upload():
 	creds = None
 	saveFolder = None
 
@@ -36,24 +38,26 @@ def main():
 			pageToken=page_token).execute()
 
 		for folder in results.get('files',[]):
-			print(folder.get('name'))
-			print(folder.get('id'))
+#			print(folder.get('name'))
+#			print(folder.get('id'))
 			if folder.get('name') == 'quiz_save':
 				saveFolder = folder.get('id')
 		page_token = results.get('nextPageToken',None)
 		if page_token is None:
 			break
 
-	file_metadata = {
-		'name' : 'new.json',
-		'parents' : [saveFolder]
-	}
-	media = MediaFileUpload('files/new.json',
-				mimetype='application/json')
-	file = drive_service.files().create(body=file_metadata,media_body=media,fields='id').execute()
+	saveFilePath = Path("../saves/")
+	saveFileList = list(saveFilePath.glob("*"))
+	for saveFile in saveFileList:
+		print(str(saveFile).split('/')[2])
+		file_metadata = {
+			'name' : str(saveFile).split('/')[2],
+			'parents' : [saveFolder]
+		}
+		print(str(mimetypes.guess_type(str(saveFile))))
+		media = MediaFileUpload(str(saveFile),
+				mimetype=str(mimetypes.guess_type(str(saveFile))[0]))
+		file = drive_service.files().create(body=file_metadata,media_body=media,fields='id').execute()
+		print('File ID:')
+		print(file.get('id'))
 
-	print('File ID:')
-	print(file.get('id'))
-
-if __name__ == '__main__':
-	main()

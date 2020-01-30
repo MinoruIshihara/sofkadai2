@@ -6,11 +6,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import io
 from googleapiclient.http import MediaIoBaseDownload
-
+import upload
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
-def main():
+def download():
 	creds = None
 	saveFolder = None
 	saveFiles = []
@@ -39,8 +39,8 @@ def main():
 			pageToken=page_token).execute()
 
 		for folder in results.get('files',[]):
-			print(folder.get('name'))
-			print(folder.get('id'))
+#			print(folder.get('name'))
+#			print(folder.get('id'))
 			if folder.get('name') == 'quiz_save':
 				saveFolder = folder.get('id')
 		page_token = results.get('nextPageToken',None)
@@ -52,29 +52,24 @@ def main():
 	page_token = None
 	while True:
 		results = drive_service.files().list(
-			q="'"+saveFolder+"' in parents and mimeType='application/json'",
+			q="'"+saveFolder+"' in parents and trashed = false",
 			spaces='drive',
 			fields="nextPageToken, files(id, name)",
 			pageToken=page_token).execute()
 
 		for rfile in results.get('files',[]):
-			print(rfile.get('name'))
-			print(rfile.get('id'))
+#			print(rfile.get('name'))
+#			print(rfile.get('id'))
 			saveFiles.append(rfile)
 		page_token = results.get('nextPageToken',None)
 		if page_token is None:
 			break
 	for dfile in saveFiles:
 		request = drive_service.files().get_media(fileId=dfile.get('id'))
-		fh = open('downloaded','wb')
+		fh = open('./downloaded/'+dfile.get('name'),'wb')
 		downloader = MediaIoBaseDownload(fh,request)
 		done = False
 		while done is False:
 			status, done = downloader.next_chunk()
 			print(status)
 		print ("Download %d%%." % int(status.progress() * 100))
-
-
-
-if __name__ == '__main__':
-	main()
