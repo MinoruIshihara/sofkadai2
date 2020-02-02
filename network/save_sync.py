@@ -13,17 +13,22 @@ def main():
 		print("not found log files");
 		upload.upload()
 	else:
+		localTimeObj2=None
+		remoteTimeObj2=None
 		with open('./downloaded/timeDate.txt','r') as timeDateFile:
 			timeDateLogs = timeDateFile.readlines()
 			remoteTime = timeDateLogs[len(timeDateLogs)-1].split(';')[0].split('\n')[0]
-			tdate = datetime.date(tdatetime.year, tdatetime.month, tdatetime.day)
-			print(remoteTime)
+			remoteTimeSprObj = datetime.strptime(remoteTime,'%Y-%m-%d %H:%M:%S')
+			remoteTimeObj2 = datetime(remoteTimeSprObj.year, remoteTimeSprObj.month, remoteTimeSprObj.day, remoteTimeSprObj.hour,remoteTimeSprObj.minute, 0,0,None)
+			print(remoteTimeObj2)
 
 		with open('../saves/timeDate.txt','r') as timeDateFile:
 			timeDateLogs = timeDateFile.readlines()
 			localTime = timeDateLogs[len(timeDateLogs)-1].split(';')[0].split('\n')[0]
-			print(localTime)
-		if datetime.strptime(remoteTime, '%Y-%m-%dT%H:%M:%S.') < datetime.strptime(localTime, '%Y-%m-%dT%H:%M:%S.'):
+			localTimeSprObj = datetime.strptime(localTime,'%Y-%m-%d %H:%M:%S')
+			localTimeObj2 = datetime(localTimeSprObj.year, localTimeSprObj.month, localTimeSprObj.day, localTimeSprObj.hour,localTimeSprObj.minute, 0,0,None)
+			print(localTimeObj2)
+		if remoteTimeObj2 < localTimeObj2:
 			print("Upload")
 			upload.upload()
 		else:
