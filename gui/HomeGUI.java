@@ -47,13 +47,17 @@ public class HomeGUI extends JFrame
                 }
             }
         );
-        JButton todayScheduleButton = new JButton("スケジュール");
+        JButton todayScheduleButton = new JButton("Google Driveで同期");
         todayScheduleButton.addActionListener
         (
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)
                 {
+			System.out.println("Call");
+			String[] SubProcArg = {"python3","../network/save_sync.py"};
+			SubProcessColler networkSubProc = new SubProcessColler(SubProcArg);
+			networkSubProc.runProcess();
                 }
             }
         );
