@@ -66,7 +66,7 @@ def download():
 			break
 	for dfile in saveFiles:
 		request = drive_service.files().get_media(fileId=dfile.get('id'))
-		fh = open('./downloaded/'+dfile.get('name'),'wb')
+		fh = open('../cache/downloaded/'+dfile.get('name'),'wb')
 		downloader = MediaIoBaseDownload(fh,request)
 		done = False
 		while done is False:

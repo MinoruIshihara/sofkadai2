@@ -2,11 +2,12 @@ import download
 import upload
 from pathlib import Path
 from datetime import datetime
+import os
 
 def main():
 	download.download()
 
-	saveFilePath = Path("./downloaded/")
+	saveFilePath = Path("../cache/downloaded/")
 	timeDateFileList = list(saveFilePath.glob("timeDate.txt"))
 
 	if len(timeDateFileList) == 0:
@@ -15,7 +16,7 @@ def main():
 	else:
 		localTimeObj2=None
 		remoteTimeObj2=None
-		with open('./downloaded/timeDate.txt','r') as timeDateFile:
+		with open('../cache/downloaded/timeDate.txt','r') as timeDateFile:
 			timeDateLogs = timeDateFile.readlines()
 			remoteTime = timeDateLogs[len(timeDateLogs)-1].split(';')[0].split('\n')[0]
 			remoteTimeSprObj = datetime.strptime(remoteTime,'%Y-%m-%d %H:%M:%S')
@@ -33,6 +34,7 @@ def main():
 			upload.upload()
 		else:
 			print('copy')
+			os.system('mv ../cache/downloaded/* ../saves')
 
 if __name__ == '__main__':
 	main()
