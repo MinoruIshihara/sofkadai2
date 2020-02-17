@@ -17,10 +17,12 @@ public class EditCardListGUI extends JFrame implements ActionListener
     ArrayList<JPanel> cardTextPanelList;
     ArrayList<JTextField> textFieldArrAns;
     ArrayList<JTextField> textFieldArr;
+    String title;
 
     public EditCardListGUI(String title)
     {
         super(title);
+        this.title = title;
 
         String[] getPadInfoProcessArg = {"python3","../quizsystem/getPadInfo.py",title};
         SubProcessColler getPadInfoProcess = new SubProcessColler(getPadInfoProcessArg);
@@ -78,11 +80,11 @@ public class EditCardListGUI extends JFrame implements ActionListener
 
         cardListPanels = new ArrayList<JPanel>(0);
         GridLayout cardListLayout = new GridLayout(6,1);
-        for(int panelNum=0;panelNum<(maxCardNum+1)/5;panelNum++)
+        for(int panelNum=0;panelNum<(maxCardNum+5)/5;panelNum++)
         {
             cardListPanels.add(new JPanel());
             cardListPanels.get(panelNum).setLayout(cardListLayout);
-            for(int cardNum=0;cardNum<5;cardNum++)
+            for(int cardNum=0;cardNum<5&&panelNum*5+cardNum<cardArray.size();cardNum++)
             {
                 cardListPanels.get(panelNum).add(cardArray.get(panelNum*5+cardNum));
                 System.out.println(cardArray.get(panelNum*5+cardNum).getAccessibleContext());
@@ -102,7 +104,10 @@ public class EditCardListGUI extends JFrame implements ActionListener
 
             contentPane.add(cardListPanels.get(panelNum));
         }
-
+        JButton newCardButton = new JButton("新規作成");
+        newCardButton.setActionCommand("NEW");
+        newCardButton.addActionListener(this);
+        cardListPanels.get((maxCardNum+5)/5-1).add(newCardButton);
     }
     public void actionPerformed(ActionEvent e)
     {
@@ -123,59 +128,10 @@ public class EditCardListGUI extends JFrame implements ActionListener
             System.out.println(textFieldArr.get(cardNum).getText());
             System.out.println(textFieldArrAns.get(cardNum).getText());
         }
-        else
+        else if(e.getActionCommand().equals("NEW"))
         {
-            JPanel cardPanel = new JPanel();
-            cardPanel.setLayout(new BorderLayout());
-
-            JPanel cardTextPanel = new JPanel();
-            GridLayout cardPanelLayout = new GridLayout(1,2);
-            cardPanelLayoutArray.add(cardPanelLayout);
-            cardTextPanel.setLayout(cardPanelLayout);
-
-            JTextField quizTextField = new JTextField("問題を入力");
-            textFieldArr.add(quizTextField);
-            JTextField ansTextField = new JTextField("回答を入力");
-            textFieldArrAns.add(ansTextField);
-            cardTextPanel.add(quizTextField);
-            cardTextPanel.add(ansTextField);
-
-            cardTextPanelList.add(cardTextPanel);
-
-            JButton returnButton = new JButton("保存");
-            returnButton.setActionCommand("save:"+String.valueOf(cardArray.size()));
-            returnButton.addActionListener(this);
-
-            cardPanel.add(cardTextPanel,BorderLayout.CENTER);
-            cardPanel.add(returnButton,BorderLayout.LINE_END);
-
-            cardArray.add(cardPanel);
-
-            if(cardArray.size()%5==0)
-            {
-                JPanel cardListPanel = new JPanel();
-                cardListPanels.add(cardListPanel);
-                cardListPanel.setLayout(new GridLayout(6,1));
-                cardListPanel.add(cardPanel);
-
-                JPanel nextBackPanel = new JPanel();
-                nextBackPanel.setLayout(new GridLayout(1,2));
-                JButton backButton = new JButton("Back");
-                backButton.addActionListener(this);
-                backButton.setActionCommand("Back");
-                JButton nextButton = new JButton("Next");
-                nextButton.addActionListener(this);
-                nextButton.setActionCommand("Next");
-                nextBackPanel.add(backButton);
-                nextBackPanel.add(nextButton);
-     
-                cardListPanel.add(nextBackPanel);
-                contentPane.add(cardListPanel);
-            }
-            else
-            {
-                cardListPanels.get(cardListPanels.size()-1).add(cardPanel);
-            }
+            NewCardGUI newCardGUI = new NewCardGUI(title);
+            dispose();
         }
     }
 }

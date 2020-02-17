@@ -6,24 +6,29 @@ import java.util.*;
 import java.io.IOException;
 import java.lang.InterruptedException;
 
-public class NewPadGUI extends JFrame implements ActionListener
+public class NewCardGUI extends JFrame implements ActionListener
 {
     private JTextField titleText;
-    public NewPadGUI()
+    JTextField quizTextField;
+    JTextField ansTextField;
+    String title;
+    public NewCardGUI(String title)
     {
         super("新規単語帳");
+        this.title = title;
 
         setBounds(100,100,290,76);
         setVisible(true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
         Container contentPane = getContentPane();
-        GridLayout newPadLayout = new GridLayout(0,1);
+        GridLayout newPadLayout = new GridLayout(0,2);
         contentPane.setLayout(newPadLayout);
 
-        titleText = new JTextField("タイトルを入力",20);
-        titleText.setPreferredSize(new Dimension(200,15));
-        contentPane.add(titleText);
+        quizTextField = new JTextField("問題を入力");
+        ansTextField = new JTextField("回答を入力");
+        contentPane.add(quizTextField);
+        contentPane.add(ansTextField);
 
         JButton createButton = new JButton("作成");
         createButton.addActionListener(this);
@@ -31,10 +36,10 @@ public class NewPadGUI extends JFrame implements ActionListener
     }
     public void actionPerformed(ActionEvent e)
     {
-        String[] makeListProcArg = {"python3","../quizsystem/makePad.py",titleText.getText()};
+        String[] makeListProcArg = {"python3","../quizsystem/makeCard.py",quizTextField.getText(),ansTextField.getText()};
         SubProcessColler makeListProc = new SubProcessColler(makeListProcArg);
         makeListProc.runProcess();
-        PadListGUI_ex padListGUI = new PadListGUI_ex();
+        EditCardListGUI padListGUI = new EditCardListGUI(title);
         dispose();
     }
 }

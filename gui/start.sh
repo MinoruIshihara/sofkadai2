@@ -1,4 +1,5 @@
 javac SubProcessColler.java
+javac NewCardGUI.java
 javac CardListGUI.java
 javac NewPadGUI.java
 javac PadListGUI.java
