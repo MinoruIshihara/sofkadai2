@@ -108,6 +108,7 @@ public class PadListGUI_ex extends JFrame implements ActionListener
         else if(e.getActionCommand().matches("edit:.*"))
         {
             String padName = e.getActionCommand().split(":",0)[1];
+            EditCardListGUI editCardList = new EditCardListGUI(padName);
             System.out.println(padName);
         }
         else if(e.getActionCommand().equals("+新規作成"))
